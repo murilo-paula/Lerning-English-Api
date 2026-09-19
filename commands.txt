@@ -1,0 +1,10 @@
+
+
+npm install prisma --save-dev
+npm install @prisma/client @prisma/adapter-mariadb dotenv
+
+npx prisma init --datasource-provider mysql
+
+DATABASE_URL="mysql://usuario:senha@localhost:3306/nome_do_banco"
+
+npx prisma migrate dev --name init
