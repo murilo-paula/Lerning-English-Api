@@ -21,3 +21,6 @@ constructor() {
 
     super({ adapter });
   }
+
+npm install bcrypt
+npm install --save-dev @types/bcrypt
