@@ -5,11 +5,11 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
 }
 
 model Users {
@@ -17,4 +17,9 @@ model Users {
   email String @unique
   password String
   name String?
+
+  create_at DateTime @default(now())
+  update_at DateTime @updatedAt
+
+  @@map("users")
 }
