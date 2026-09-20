@@ -10,6 +10,7 @@ import { JwtModule } from '@nestjs/jwt';
     forwardRef(() => UsersModule), // ✅ agora com forwardRef,
     PassportModule,
     JwtModule.register({
+      global: true,
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1d' as any },
     }),
