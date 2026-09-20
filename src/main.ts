@@ -8,6 +8,12 @@ async function bootstrap() {
     instrument: ObserveInstrument,
   });
 
+  app.enableCors({
+    origin: 'http://localhost:5173', // origem do seu front-end (Vite)
+    credentials: true, // permite cookies/sessão, se você for usar
+  });
+
+
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(process.env.PORT ?? 3000);
