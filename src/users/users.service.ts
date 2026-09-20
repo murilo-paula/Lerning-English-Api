@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -7,8 +7,19 @@ import { PrismaService } from '../prisma/prisma.service';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(bodyUser: CreateUserDto) {
-    const userIsExisting = 
+  async create(bodyUser: CreateUserDto) {
+    try {
+      const userIsExisting = await this.prisma.users.findUnique({
+        where: {email: bodyUser.email},
+      })
+
+      if (!userIsExisting) {throw new ConflictException("Not register");}
+
+      
+    } catch (error) {
+      
+    }
+    
 
     return ;
   }
