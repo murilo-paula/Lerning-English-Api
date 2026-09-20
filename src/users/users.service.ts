@@ -1,4 +1,4 @@
-import { ConflictException, HttpException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, HttpException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
@@ -51,12 +51,32 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    try {
+      const allUsers = this.prisma.users.findMany({select: {name: true, email: true} })
+
+      
+
+      return allUsers;
+    } catch (error) {
+      throw new InternalServerErrorException("find all users error")
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    try {
+
+      const userExisting = await this.prisma.users.findUnique({where: {id: id}, select: {name: true, email: true}});
+
+      if (!userExisting) {throw new NotFoundException("User dont exist")};
+
+      return userExisting;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        return error;
+      }
+      throw new InternalServerErrorException("find unique user error");
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
