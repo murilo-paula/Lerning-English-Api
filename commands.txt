@@ -8,3 +8,16 @@ npx prisma init --datasource-provider mysql
 DATABASE_URL="mysql://usuario:senha@localhost:3306/nome_do_banco"
 
 npx prisma migrate dev --name init
+
+
+constructor() {
+    const adapter = new PrismaMariaDb({
+        host: process.env.DATABASE_HOST,
+        user: process.env.DATABASE_USER,
+        password: process.env.DATABASE_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        connectionLimit: 5,
+    });
+
+    super({ adapter });
+  }
