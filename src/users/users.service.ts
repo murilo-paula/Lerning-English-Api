@@ -16,7 +16,9 @@ export class UsersService {
         where: {email: bodyUser.email},
       })
 
-      if (!userIsExisting) {throw new ConflictException("Not register");}
+      if (userIsExisting) {
+        throw new ConflictException('Email already registered');
+      }
 
       const hashpassword = await bcrypt.hash(bodyUser.password, 10);
 
